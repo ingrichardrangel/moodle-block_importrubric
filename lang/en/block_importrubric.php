@@ -20,7 +20,8 @@
  * @package   block_importrubric
  * @copyright 2025 Richard Rangel
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ */
+
 $string['errornoid'] = 'No ID Found';
 $string['importfromcsv'] = 'Import rubric from CSV';
 $string['importrubric:addinstance'] = 'Add a new Import Rubric block to a page';
