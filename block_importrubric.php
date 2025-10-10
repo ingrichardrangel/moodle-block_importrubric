@@ -21,6 +21,7 @@
  * @copyright 2025 Richard Rangel
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 class block_importrubric extends block_base {
     /**
      * Initialize block title.
