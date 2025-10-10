@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Main block class for block_importrubric.
  *
@@ -25,11 +23,10 @@ defined('MOODLE_INTERNAL') || die();
  */
 
 class block_importrubric extends block_base {
-
     /**
      * Initialize block title.
      */
-    public function init() {
+    public function init(): void {
         $this->title = get_string('pluginname', 'block_importrubric');
     }
 
@@ -38,7 +35,7 @@ class block_importrubric extends block_base {
      *
      * @return array
      */
-    public function applicable_formats() {
+    public function applicable_formats(): array {
         return [
             'mod' => true, // Only available in activity modules.
         ];
@@ -49,8 +46,8 @@ class block_importrubric extends block_base {
      *
      * @return stdClass
      */
-    public function get_content() {
-        global $PAGE, $DB;
+    public function get_content(): stdClass {
+        global $DB;
 
         if ($this->content !== null) {
             return $this->content;
@@ -68,13 +65,10 @@ class block_importrubric extends block_base {
         }
 
         // Retrieve the module name (e.g., 'assign').
-        $sql = "
-            SELECT m.name
-              FROM {course_modules} cm
-              JOIN {modules} m ON cm.module = m.id
-             WHERE cm.id = :cmid
-             LIMIT 1
-        ";
+        $sql = 'SELECT m.name
+                  FROM {course_modules} cm
+                  JOIN {modules} m ON cm.module = m.id
+                 WHERE cm.id = :cmid';
         $modulename = $DB->get_field_sql($sql, ['cmid' => $cmid]);
 
         // Only show the button if the module is an assignment.
@@ -90,7 +84,7 @@ class block_importrubric extends block_base {
 
         // Generate the import URL.
         $url = new moodle_url('/local/customgradingform_renderer/initimport.php', [
-            'cmid' => $cmid
+            'cmid' => $cmid,
         ]);
 
         // Render the import button.
@@ -99,7 +93,7 @@ class block_importrubric extends block_base {
             get_string('importfromcsv', 'block_importrubric'),
             [
                 'class' => 'btn btn-primary',
-                'style' => 'display:block;text-align:center;padding:10px;margin-top:10px;'
+                'style' => 'display:block;text-align:center;padding:10px;margin-top:10px;',
             ]
         );
 
