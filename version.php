@@ -14,15 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Version file for block_importrubric.
- *
- * @package   block_importrubric
- * @copyright 2025 Richard Rangel
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 defined('MOODLE_INTERNAL') || die();
+
+// Version file for block_importrubric.
+// @package   block_importrubric
+// @copyright 2025 Richard Rangel
+// @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 $plugin->component = 'block_importrubric';
 $plugin->version   = 2025101000; // Plugin version (YYYYMMDDXX).
