@@ -31,7 +31,6 @@ use core_privacy\local\metadata\null_provider;
  * Null provider since this block does not store personal user data.
  */
 class provider implements null_provider {
-
     /**
      * Returns a language string explaining why this block stores no data.
      *
