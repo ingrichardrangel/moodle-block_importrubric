@@ -15,21 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * handles strings for block_importrubric.
+ * Language strings for block_importrubric.
  *
  * @package   block_importrubric
  * @copyright 2025 Richard Rangel
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-// Language strings for the Import Rubric block.
-
-$string['pluginname'] = 'Import rubric from CSV';
-$string['importfromcsv'] = 'Import rubric from CSV';
-$string['privacy:metadata'] = 'The rubric import block does not store any personal data.';
-$string['onlyintask'] = 'This block is only available within an Assignment activity.';
+*/
 $string['errornoid'] = 'No ID Found';
-
-// Capabilities.
+$string['importfromcsv'] = 'Import rubric from CSV';
 $string['importrubric:addinstance'] = 'Add a new Import Rubric block to a page';
 $string['importrubric:myaddinstance'] = 'Add a new Import Rubric block to the My Moodle page';
+$string['onlyintask'] = 'This block is only available within an Assignment activity.';
+$string['pluginname'] = 'Import rubric from CSV';
+$string['privacy:metadata'] = 'The rubric import block does not store any personal data.';
