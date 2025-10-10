@@ -22,7 +22,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_importrubric extends block_base {
-
     /**
      * Initialize block title.
      */
@@ -96,6 +95,10 @@ class block_importrubric extends block_base {
                 'style' => 'display:block;text-align:center;padding:10px;margin-top:10px;',
             ]
         );
+
+        return $this->content;
+    }
+}
 
         return $this->content;
     }
