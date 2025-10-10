@@ -33,4 +33,3 @@ $plugin->release   = '1.0.3'; // Human-readable release name.
 $plugin->dependencies = [
     'local_customgradingform_renderer' => 2024051800,
 ];
-
