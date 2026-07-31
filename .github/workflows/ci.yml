@@ -30,9 +30,36 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['7.4', '8.0', '8.1']
-        moodle-branch: ['MOODLE_401_STABLE']
-        database: [pgsql, mariadb]
+        include:
+          # Test the lowest PHP version supported by Moodle 4.5.
+          - php: '8.1'
+            moodle-branch: 'MOODLE_405_STABLE'
+            database: mariadb
+
+          # Test Moodle 4.5 with PostgreSQL and a newer PHP version.
+          - php: '8.3'
+            moodle-branch: 'MOODLE_405_STABLE'
+            database: pgsql
+
+          # Moodle 5.0 requires PHP 8.2 or later.
+          - php: '8.2'
+            moodle-branch: 'MOODLE_500_STABLE'
+            database: mariadb
+
+          # Moodle 5.1 supports PHP 8.4.
+          - php: '8.4'
+            moodle-branch: 'MOODLE_501_STABLE'
+            database: pgsql
+
+          # Moodle 5.2 requires PHP 8.3 or later. Test both supported
+          # PHP versions and both database engines at the upper boundary.
+          - php: '8.3'
+            moodle-branch: 'MOODLE_502_STABLE'
+            database: mariadb
+
+          - php: '8.4'
+            moodle-branch: 'MOODLE_502_STABLE'
+            database: pgsql
 
     steps:
       - name: Check out repository code
@@ -44,7 +71,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: ${{ matrix.extensions }}
+          extensions: pgsql, mysqli, zip, gd, intl, soap, sodium
           ini-values: max_input_vars=5000
           # If you are not using code coverage, keep "none". Otherwise, use "pcov" (Moodle 3.10 and up) or "xdebug".
           # If you try to use code coverage with "none", it will fallback to phpdbg (which has known problems).
@@ -59,6 +86,7 @@ jobs:
           echo "NVM_DIR=$HOME/.nvm" >> $GITHUB_ENV
 
       - name: Install moodle-plugin-ci
+        id: install
         run: moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
         env:
           DB: ${{ matrix.database }}
@@ -67,45 +95,45 @@ jobs:
           # MOODLE_APP: 'true'
 
       - name: PHP Lint
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: moodle-plugin-ci phplint
 
       - name: PHP Mess Detector
         continue-on-error: true # This step will show errors but will not fail
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: moodle-plugin-ci phpmd
 
       - name: Moodle Code Checker
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: moodle-plugin-ci phpcs --max-warnings 0
 
       - name: Moodle PHPDoc Checker
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: moodle-plugin-ci phpdoc --max-warnings 0
 
       - name: Validating
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: moodle-plugin-ci validate
 
       - name: Check upgrade savepoints
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: moodle-plugin-ci savepoints
 
       - name: Mustache Lint
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: moodle-plugin-ci mustache
 
       - name: Grunt
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: moodle-plugin-ci grunt --max-lint-warnings 0
 
       - name: PHPUnit tests
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: moodle-plugin-ci phpunit --fail-on-warning
 
       - name: Behat features
         id: behat
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: moodle-plugin-ci behat --profile chrome --scss-deprecations
 
       - name: Upload Behat Faildump
